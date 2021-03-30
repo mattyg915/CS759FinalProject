@@ -16,7 +16,6 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    // Args are chars, convert to long int
     char* filename = argv[1];
 
     int width, height, features;
