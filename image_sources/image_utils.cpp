@@ -37,7 +37,7 @@ void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& orig_im
             double g = orig_image[index + 1];
             double b = orig_image[index + 2];
 
-            double grey = (0.299 * r) + (0.587 * g) + (0.114* b);
+            double grey = (0.299 * r) + (0.587 * g) + (0.114 * b);
 
             output[p_index++] = grey;
         }
