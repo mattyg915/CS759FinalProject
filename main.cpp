@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
     std::cout << "Image width = " << width << '\n';
     std::cout << "Image height = " << height << '\n';
 
-    auto* pixels = new uint8_t[width * height * CHANNEL_NUM];
+    auto* pixels = new uint8_t[width * height];
 
     rgb_to_greyscale(width, height, image, pixels);
 
