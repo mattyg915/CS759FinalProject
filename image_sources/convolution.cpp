@@ -21,13 +21,14 @@ void convolve(unsigned char* image, unsigned char* output, int width, int height
     {
         for (int x = 0; x < width; x++)
         {
-            output[y * width + x] = 0;
+            int output_index = y * width + x;
+            output[output_index] = 0;
             for (int i = 0; i < m; i++)
             {
                 for (int j = 0; j < m; j++)
                 {
                     float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
-                    output[y * width + x] += mask[i * m + j] * result;
+                    output[output_index] += mask[i * m + j] * result;
                 }
             }
         }

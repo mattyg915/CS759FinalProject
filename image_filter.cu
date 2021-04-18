@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "image_headers/image_utils.cuh"
+#include "image_headers/image_utils.h"
 #include "image_headers/convolution.cuh"
 
 extern "C" {
@@ -14,14 +14,16 @@ int main(int argc, char* argv[])
 {
 #define CHANNEL_NUM 3
 
-    // Must have exactly 1 command line argument
+    // Must have exactly 3 command line arguments
     if (argc != 2)
     {
-        std::cerr << "Usage: ./main filename" << std::endl;
+        std::cerr << "Usage: ./main filename num_blocks num_threads" << std::endl;
         exit(1);
     }
 
     char* filename = argv[1];
+    int num_blocks = atoi(argv[2]);
+    int num_threads = atoi(argv[3]);
 
     int width, height, features;
     std::vector<unsigned char> image;
