@@ -1,4 +1,9 @@
-#ifndef CS759FINALPROJECT_CONVOLUTION_CUH
-#define CS759FINALPROJECT_CONVOLUTION_CUH
+#ifndef CONVOLUTION_CUH
+#define CONVOLUTION_CUH
 
-#endif //CS759FINALPROJECT_CONVOLUTION_CUH
+
+__global__ convolve_kernel(unsigned char* image, unsigned char* output, int width, int height, const float* mask, int m);
+
+void convolve(unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m);
+
+#endif //CONVOLUTION_CUH
