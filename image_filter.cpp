@@ -36,10 +36,10 @@ int main(int argc, char* argv[])
     std::cout << "Image width = " << width << '\n';
     std::cout << "Image height = " << height << '\n';
 
-    auto* pixels = new uint8_t[width * height];
-    auto* sharpened_output = new uint8_t[width * height];
-    auto* gaussian_blurred_output = new uint8_t[width * height];
-    auto* edge_detect_output = new uint8_t[width * height];
+    auto* pixels = new unsigned char[width * height];
+    auto* sharpened_output = new unsigned char[width * height];
+    auto* gaussian_blurred_output = new unsigned char[width * height];
+    auto* edge_detect_output = new unsigned char[width * height];
     float sharpen_kernel[9] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
     float gaussian_blur_kernel[9] = {0.0625, 0.125, 0.0625, 0.125, 0.25, 0.125, 0.0625, 0.125, 0.0625};
     float edge_detect_kernel[9] = {-1, -1, -1, -1, 8, -1, -1, -1, -1};
