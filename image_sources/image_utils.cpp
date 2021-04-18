@@ -23,7 +23,7 @@ bool load_image(std::vector<unsigned char>& image, const char* filename, int& x,
  * @param orig_image original image array
  * @param output array to output to
  */
-void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& orig_image, uint8_t* output)
+void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& orig_image, unsigned char* output)
 {
     int num_channels = 3;
 
