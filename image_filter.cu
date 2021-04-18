@@ -17,13 +17,11 @@ int main(int argc, char* argv[])
     // Must have exactly 3 command line arguments
     if (argc != 2)
     {
-        std::cerr << "Usage: ./main filename num_blocks num_threads" << std::endl;
+        std::cerr << "Usage: ./main filename" << std::endl;
         exit(1);
     }
 
     char* filename = argv[1];
-    int num_blocks = atoi(argv[2]);
-    int num_threads = atoi(argv[3]);
 
     int width, height, features;
     std::vector<unsigned char> image;
