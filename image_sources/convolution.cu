@@ -1,6 +1,6 @@
 #include "../image_headers/convolution.cuh"
 
-float calcFx(const unsigned char* image, int i, int j, int width, int height) {
+__device__ float calcFx(const unsigned char* image, int i, int j, int width, int height) {
     if (0 <= i && i < width && 0 <= j && j < height)
     {
         return image[j * width + i];
