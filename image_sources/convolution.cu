@@ -39,20 +39,20 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
 void convolve(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
     int size = width * height;
-    int num_threads = 32;
+    int num_threads = 64;
     int num_blocks = (size - 1) / num_threads + 1;
 
     // copy data to the device
-    unsigned char *dImage, *dOoutput;
+    unsigned char *dImage, *dOutput;
     cudaMalloc((void **)&dImage, size * sizeof(unsigned char));
-    cudaMalloc((void **)&dOoutput, size * sizeof(unsigned char));
+    cudaMalloc((void **)&dOutput, size * sizeof(unsigned char));
     cudaMemcpy(dImage, image, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
-    cudaMemcpy(dOoutput, output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dOutput, output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
 
 
-    convolve_kernel<<<num_blocks, num_threads>>>(dImage, dOoutput, width, height, mask, m);
+    convolve_kernel<<<num_blocks, num_threads>>>(dImage, dOutput, width, height, mask, m);
     cudaDeviceSynchronize();
 
     // copy back
-    cudaMemcpy(output, dOoutput, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
+    cudaMemcpy(output, dOutput, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 }
