@@ -56,6 +56,7 @@ int main(int argc, char* argv[])
     rgb_to_greyscale(width, height, image, pixels);
 
     convolve(dPixels, dSharpened_output, width, height, sharpen_kernel, 3);
+    cudaDeviceSynchronize();
 
     // copy back
     cudaMemcpy(sharpened_output, dSharpened_output, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
