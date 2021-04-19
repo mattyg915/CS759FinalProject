@@ -35,9 +35,9 @@ int main(int argc, char* argv[])
 
     const int size = width * height;
 
-    unsigned char* pixels = new unsigned char[size];
+    const unsigned char* pixels = new unsigned char[size];
     unsigned char* sharpened_output = new unsigned char[size];
-    float sharpen_kernel[9] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
+    const float sharpen_kernel[9] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
 
     rgb_to_greyscale(width, height, image, pixels);
 
