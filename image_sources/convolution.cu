@@ -23,10 +23,13 @@ __global__ void convolve_kernel(unsigned char* image, unsigned char* output, int
 
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
     output[output_index] = 0;
+    printf("hit0");
     for (int i = 0; i < m; i++)
     {
+        printf("hit1");
         for (int j = 0; j < m; j++)
         {
+            printf("hit2");
             float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
             output[output_index] += mask[i * m + j] * result;
             printf("out = %c\n", output[output_index]);
