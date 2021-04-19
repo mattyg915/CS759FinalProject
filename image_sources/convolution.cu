@@ -28,6 +28,7 @@ __global__ void convolve_kernel(unsigned char* image, unsigned char* output, int
         for (int j = 0; j < m; j++)
         {
             float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
+            printf("hit3\n");
             output[output_index] += mask[i * m + j] * result;
             printf("hit4\n");
         }
