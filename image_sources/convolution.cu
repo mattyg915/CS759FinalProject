@@ -20,7 +20,7 @@ __global__ void convolve_kernel(unsigned char* image, unsigned char* output, int
 {
     int x = threadIdx.x;
     int y = blockIdx.x;
-    printf("x = %d y = %d\n", x, y);
+
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
     output[output_index] = 0;
     for (int i = 0; i < m; i++)
@@ -29,6 +29,7 @@ __global__ void convolve_kernel(unsigned char* image, unsigned char* output, int
         {
             float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
             output[output_index] += mask[i * m + j] * result;
+            printf("out = %c\n", output[output_index]);
         }
     }
 }
