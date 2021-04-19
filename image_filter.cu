@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 
     const int size = width * height;
 
-    const unsigned char* pixels = new unsigned char[size];
+    unsigned char* pixels = new unsigned char[size];
     unsigned char* sharpened_output = new unsigned char[size];
     const float sharpen_kernel[9] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
 
