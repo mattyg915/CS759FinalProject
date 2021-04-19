@@ -2,7 +2,6 @@
 #include <iostream>
 
 __device__ float calcFx(const unsigned char* image, int i, int j, int width, int height) {
-    printf("hit3\n");
     if (0 <= i && i < width && 0 <= j && j < height)
     {
         return image[j * width + i];
@@ -30,7 +29,7 @@ __global__ void convolve_kernel(unsigned char* image, unsigned char* output, int
         {
             float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
             output[output_index] += mask[i * m + j] * result;
-            printf("out = %c\n", output[output_index]);
+            printf("hit4\n");
         }
     }
 }
