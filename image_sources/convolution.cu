@@ -19,6 +19,10 @@ __device__ float calcFx(const unsigned char* image, int i, int j, int width, int
 
 __global__ void convolve_kernel(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
+    int x = threadIdx.x;
+    int y = blockIdx.x;
+    int z = blockDim.x;
+
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (output_index == 512)
     {
