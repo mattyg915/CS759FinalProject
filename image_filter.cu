@@ -38,8 +38,8 @@ int main(int argc, char* argv[])
 
     const int size = width * height;
 
-    auto* pixels = new unsigned char[size];
-    auto* sharpened_output = new unsigned char[size];
+    unsigned char* pixels = new unsigned char[size];
+    unsigned char* sharpened_output = new unsigned char[size];
     float sharpen_kernel[9] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
 
     // copy data to the device
