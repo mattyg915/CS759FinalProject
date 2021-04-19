@@ -35,5 +35,7 @@ __global__ void convolve_kernel(unsigned char* image, unsigned char* output, int
 
 void convolve(unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
-    convolve_kernel<<<height, width>>>(image, output, width, height, mask, m);
+    int num_threads = 32;
+    int num_blocks = (width * height - 1) / num_threads + 1;
+    convolve_kernel<<<num_blocks, num_threads>>>(image, output, width, height, mask, m);
 }
