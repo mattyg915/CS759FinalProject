@@ -40,11 +40,7 @@ int main(int argc, char* argv[])
 
     auto* pixels = new unsigned char[size];
     auto* sharpened_output = new unsigned char[size];
-    auto* gaussian_blurred_output = new unsigned char[size];
-    auto* edge_detect_output = new unsigned char[size];
     float sharpen_kernel[9] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
-    float gaussian_blur_kernel[9] = {0.0625, 0.125, 0.0625, 0.125, 0.25, 0.125, 0.0625, 0.125, 0.0625};
-    float edge_detect_kernel[9] = {-1, -1, -1, -1, 8, -1, -1, -1, -1};
 
     // copy data to the device
     unsigned char *dPixels, *dSharpened_output;
