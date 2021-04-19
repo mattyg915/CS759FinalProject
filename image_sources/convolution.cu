@@ -23,7 +23,7 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
     int y = blockIdx.x;
     int z = blockDim.x;
     printf("x: %d or y: %d or z: %d\n", x, y, z);
-    int index = blockIdx.x *blockDim.x + threadIdx.x;
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
     printf("index is %d\n",index);
 
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
@@ -53,14 +53,16 @@ void convolve(const unsigned char* image, unsigned char* output, int width, int 
     int num_blocks = (size - 1) / num_threads + 1;
 
     // copy data to the device
-    unsigned char *dImage, *dOutput;
+    unsigned char *dImage, *dMask, *dOutput;
     cudaMalloc((void **)&dImage, size * sizeof(unsigned char));
     cudaMalloc((void **)&dOutput, size * sizeof(unsigned char));
+    cudaMalloc((void **)&dMask, 9 * sizeof(unsigned char));
     cudaMemcpy(dImage, image, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
     cudaMemcpy(dOutput, output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dMask, mask, 9 * sizeof(unsigned char), cudaMemcpyHostToDevice);
 
 
-    convolve_kernel<<<num_blocks, num_threads>>>(dImage, dOutput, width, height, mask, m);
+    convolve_kernel<<<num_blocks, num_threads>>>(dImage, dOutput, width, height, dMask, m);
     cudaDeviceSynchronize();
 
     // copy back
