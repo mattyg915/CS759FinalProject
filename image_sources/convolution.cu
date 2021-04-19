@@ -42,13 +42,14 @@ void convolve(const unsigned char* image, unsigned char* output, int width, int 
 {
     int num_threads = 32;
     int num_blocks = (width * height - 1) / num_threads + 1;
+    int size = width * height;
 
     // copy data to the device
     unsigned char *dImage, *dOoutput;
     cudaMalloc((void **)&dImage, size * sizeof(unsigned char));
     cudaMalloc((void **)&dOoutput, size * sizeof(unsigned char));
-    cudaMemcpy(dImage, pixels, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
-    cudaMemcpy(dOoutput, sharpened_output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dImage, image, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dOoutput, output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
 
 
     convolve_kernel<<<num_blocks, num_threads>>>(dImage, dOoutput, width, height, mask, m);
