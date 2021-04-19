@@ -55,4 +55,5 @@ void convolve(const unsigned char* image, unsigned char* output, int width, int 
 
     // copy back
     cudaMemcpy(output, dOutput, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
+    printf(" out at 512 is %d\n", output[512]);
 }

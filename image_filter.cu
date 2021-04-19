@@ -47,7 +47,6 @@ int main(int argc, char* argv[])
 
     stbi_write_jpg("output.jpg", width, height, 1, pixels, 100);
     stbi_write_jpg("output_sharpened.jpg", width, height, 1, sharpened_output, 100);
-    printf(" out at 512 is %d\n", sharpened_output[512]);
 
     return 0;
 }
