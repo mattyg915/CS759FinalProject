@@ -23,14 +23,21 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
     int y = blockIdx.x;
 
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
+    if (output_index == 512)
+    {
+        printf("yes we hit 512\n");
+    }
     output[output_index] = 0;
     for (int i = 0; i < m; i++)
     {
         for (int j = 0; j < m; j++)
         {
             float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
-
             output[output_index] += mask[i * m + j] * result;
+            if (output_index == 512)
+            {
+                printf("here it's %d\n", output[512]);
+            }
         }
     }
 }
