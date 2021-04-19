@@ -22,6 +22,8 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
     int x = threadIdx.x;
     int y = blockIdx.x;
     int z = blockDim.x;
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    printf("index is %d\n", index);
 
     if (x == 0 || y == 0 || z == 0)
     {
