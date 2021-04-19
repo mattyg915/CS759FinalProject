@@ -4,7 +4,9 @@
 __device__ float calcFx(const unsigned char* image, int i, int j, int width, int height) {
     if (0 <= i && i < width && 0 <= j && j < height)
     {
+        printf("hit69\n");
         return image[j * width + i];
+        printf("420\n");
     }
     else if ((0 <= i && i < width) || (0 <= j && j < height))
     {
