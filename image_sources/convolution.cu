@@ -53,7 +53,8 @@ void convolve(const unsigned char* image, unsigned char* output, int width, int 
     int num_blocks = (size - 1) / num_threads + 1;
 
     // copy data to the device
-    unsigned char *dImage, *dMask, *dOutput;
+    unsigned char *dImage, *dOutput;
+    float *mask;
     cudaMalloc((void **)&dImage, size * sizeof(unsigned char));
     cudaMalloc((void **)&dOutput, size * sizeof(unsigned char));
     cudaMalloc((void **)&dMask, 9 * sizeof(unsigned char));
