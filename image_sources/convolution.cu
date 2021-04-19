@@ -21,10 +21,11 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
 {
     int x = threadIdx.x;
     int y = blockIdx.x;
+    int z = blockDim.x;
 
-    if (x == 0 || y == 0)
+    if (x == 0 || y == 0 || z == 0)
     {
-        printf("something is zero, either x: %d or y: %d\n", x, y);
+        printf("something is zero, either x: %d or y: %d or z: %d\n", x, y, z);
     }
 
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
