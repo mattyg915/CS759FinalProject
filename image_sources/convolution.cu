@@ -23,7 +23,6 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
     int y = blockIdx.x;
 
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
-    printf("index is %d\n", output_index);
     output[output_index] = 0;
     for (int i = 0; i < m; i++)
     {
