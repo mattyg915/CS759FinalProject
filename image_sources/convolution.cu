@@ -34,7 +34,7 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
             if (output_index == 512)
             {
                 printf("yes we hit 512\n");
-                printf("out at 512 here is %d\n", output[output_index]);
+                printf("out at 512 here is %d and should be %d\n", output[output_index], result);
             }
         }
     }
