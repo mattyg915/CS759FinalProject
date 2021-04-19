@@ -1,4 +1,5 @@
 #include "../image_headers/convolution.cuh"
+#include <iostream>
 
 __device__ float calcFx(const unsigned char* image, int i, int j, int width, int height) {
     if (0 <= i && i < width && 0 <= j && j < height)
@@ -19,6 +20,7 @@ __global__ void convolve_kernel(unsigned char* image, unsigned char* output, int
 {
     int x = threadIdx.x;
     int y = blockIdx.x;
+    printf("x = %d y = %d\n", x, y);
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
     output[output_index] = 0;
     for (int i = 0; i < m; i++)
