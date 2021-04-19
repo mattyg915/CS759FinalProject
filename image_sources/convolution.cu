@@ -19,18 +19,18 @@ __device__ float calcFx(const unsigned char* image, int i, int j, int width, int
 
 __global__ void convolve_kernel(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
-    unsigned char test = image[1];
     int x = threadIdx.x;
     int y = blockIdx.x;
 
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
+    printf("index is %d\n", output_index);
     output[output_index] = 0;
     for (int i = 0; i < m; i++)
     {
         for (int j = 0; j < m; j++)
         {
             float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
-            printf("result is %f\n", result);
+
             output[output_index] += mask[i * m + j] * result;
         }
     }
@@ -38,9 +38,9 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
 
 void convolve(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
-    int num_threads = 32;
-    int num_blocks = (width * height - 1) / num_threads + 1;
     int size = width * height;
+    int num_threads = 32;
+    int num_blocks = (size - 1) / num_threads + 1;
 
     // copy data to the device
     unsigned char *dImage, *dOoutput;
