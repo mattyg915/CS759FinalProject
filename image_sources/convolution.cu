@@ -18,7 +18,7 @@ __device__ float calcFx(const unsigned char* image, int i, int j, int width, int
     }
 }
 
-__global__ void convolve_kernel(unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
+__global__ void convolve_kernel(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
     unsigned char test = image[1];
     printf("inside kernel test is %c\n", test);
@@ -38,11 +38,22 @@ __global__ void convolve_kernel(unsigned char* image, unsigned char* output, int
     }
 }
 
-void convolve(unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
+void convolve(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
     int num_threads = 32;
-    unsigned char test = image[1];
-    printf("%c\n", test);
     int num_blocks = (width * height - 1) / num_threads + 1;
-    convolve_kernel<<<num_blocks, num_threads>>>(image, output, width, height, mask, m);
+
+    // copy data to the device
+    unsigned char *dImage, *dOoutput;
+    cudaMalloc((void **)&dImage, size * sizeof(unsigned char));
+    cudaMalloc((void **)&dOoutput, size * sizeof(unsigned char));
+    cudaMemcpy(dImage, pixels, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dOoutput, sharpened_output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+
+
+    convolve_kernel<<<num_blocks, num_threads>>>(dImage, dOoutput, width, height, mask, m);
+    cudaDeviceSynchronize();
+
+    // copy back
+    cudaMemcpy(output, dOoutput, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 }

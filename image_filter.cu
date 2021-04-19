@@ -33,29 +33,15 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    std::cout << "Image width = " << width << '\n';
-    std::cout << "Image height = " << height << '\n';
-
     const int size = width * height;
 
     unsigned char* pixels = new unsigned char[size];
     unsigned char* sharpened_output = new unsigned char[size];
     float sharpen_kernel[9] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
 
-    // copy data to the device
-    unsigned char *dPixels, *dSharpened_output;
-    cudaMalloc((void **)&dPixels, size * sizeof(unsigned char));
-    cudaMalloc((void **)&dSharpened_output, size * sizeof(unsigned char));
-    cudaMemcpy(dPixels, pixels, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
-    cudaMemcpy(dSharpened_output, sharpened_output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
-
     rgb_to_greyscale(width, height, image, pixels);
 
-    convolve(dPixels, dSharpened_output, width, height, sharpen_kernel, 3);
-    cudaDeviceSynchronize();
-
-    // copy back
-    cudaMemcpy(sharpened_output, dSharpened_output, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
+    convolve(pixels, sharpened_output, width, height, sharpen_kernel, 3);
 
     stbi_write_jpg("output.jpg", width, height, 1, pixels, 100);
     stbi_write_jpg("output_sharpened.jpg", width, height, 1, sharpened_output, 100);
