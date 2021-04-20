@@ -31,7 +31,7 @@ void convolve(unsigned char* image, unsigned char* output, int width, int height
                     output[output_index] += mask[i * m + j] * result;
                     if (output_index == 512)
                     {
-                        printf("mask[%d] is %f\n", i * m + j, mask[i * m + j]);
+                        printf("x = %d | y = %d | i = %d | j = %d | calcFx[i] = %d | calcFx[j] = %d\n", x, y, i, j, x + i - m / 2, y + j - m / 2);
                     }
                 }
             }
