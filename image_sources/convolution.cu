@@ -19,8 +19,8 @@ __device__ float calcFx(const unsigned char* image, int i, int j, int width, int
 
 __global__ void convolve_kernel(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
-    int x = blockIdx.x * blockDim.x;
-    int y = threadIdx.x;
+    int y = blockIdx.x * blockDim.x;
+    int x = threadIdx.x;
 
     int output_index = x + y;
 
@@ -31,11 +31,6 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
         {
             float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
             output[output_index] += mask[i * m + j] * result;
-            if (output_index == 512)
-            {
-                printf("yes we hit 512\n");
-                printf("out at 512 here is %d and should be %d\n", output[output_index], result);
-            }
         }
     }
 }
@@ -43,6 +38,7 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
 void convolve(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
     int size = width * height;
+    int maskSize = m * m;
     int num_threads = 64;
     int num_blocks = (size - 1) / num_threads + 1;
 
@@ -51,10 +47,10 @@ void convolve(const unsigned char* image, unsigned char* output, int width, int 
     float *dMask;
     cudaMalloc((void **)&dImage, size * sizeof(unsigned char));
     cudaMalloc((void **)&dOutput, size * sizeof(unsigned char));
-    cudaMalloc((void **)&dMask, 9 * sizeof(unsigned char));
+    cudaMalloc((void **)&dMask, maskSize * sizeof(unsigned char));
     cudaMemcpy(dImage, image, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
     cudaMemcpy(dOutput, output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
-    cudaMemcpy(dMask, mask, 9 * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dMask, mask, maskSize * sizeof(unsigned char), cudaMemcpyHostToDevice);
 
 
     convolve_kernel<<<num_blocks, num_threads>>>(dImage, dOutput, width, height, dMask, m);
@@ -62,5 +58,4 @@ void convolve(const unsigned char* image, unsigned char* output, int width, int 
 
     // copy back
     cudaMemcpy(output, dOutput, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
-    printf(" out at 512 is %d\n", output[512]);
 }

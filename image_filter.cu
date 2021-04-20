@@ -41,8 +41,6 @@ int main(int argc, char* argv[])
 
     rgb_to_greyscale(width, height, image, pixels);
 
-    printf(" in at 512 is %d\n", pixels[512]);
-
     convolve(pixels, sharpened_output, width, height, sharpen_kernel, 3);
 
     stbi_write_jpg("output.jpg", width, height, 1, pixels, 100);
