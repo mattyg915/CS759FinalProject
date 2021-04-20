@@ -33,6 +33,7 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
             output[output_index] += mask[i * m + j] * result;
             if (output_index == 512)
             {
+                printf("i is %d and x is %d and j is %d and y is %d\n", i, x, j, y);
                 printf("result is %f\n", result);
                 printf("output at 512 is %f\n", (float)output[output_index]);
             }
