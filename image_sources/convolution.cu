@@ -51,7 +51,7 @@ void convolve(const unsigned char* image, unsigned char* output, int width, int 
     float *dMask;
     cudaMalloc((void **)&dImage, size * sizeof(unsigned char));
     cudaMalloc((void **)&dOutput, size * sizeof(unsigned char));
-    cudaMalloc((void **)&dMask, maskSize * sizeof(unsigned char));
+    cudaMalloc((void **)&dMask, maskSize * sizeof(float));
     cudaMemcpy(dImage, image, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
     cudaMemcpy(dOutput, output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
     cudaMemcpy(dMask, mask, maskSize * sizeof(float), cudaMemcpyHostToDevice);
