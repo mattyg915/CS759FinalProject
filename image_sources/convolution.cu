@@ -34,7 +34,7 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
             if (output_index == 512)
             {
                 printf("x = %d | y = %d | i = %d | j = %d | calcFx[i] = %d | calcFx[j] = %d\n", x, y, i, j, x + i - m / 2, y + j - m / 2);
-                printf("result is %d\n", result);
+                printf("result is %f\n", result);
             }
         }
     }

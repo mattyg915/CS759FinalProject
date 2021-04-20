@@ -32,6 +32,7 @@ void convolve(unsigned char* image, unsigned char* output, int width, int height
                     if (output_index == 512)
                     {
                         printf("x = %d | y = %d | i = %d | j = %d | calcFx[i] = %d | calcFx[j] = %d\n", x, y, i, j, x + i - m / 2, y + j - m / 2);
+                        printf("result is %f\n", result);
                     }
                 }
             }
