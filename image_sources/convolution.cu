@@ -2,19 +2,31 @@
 #include <iostream>
 
 __device__ float calcFx(const unsigned char* image, int i, int j, int width, int height) {
+    int x = blockIdx.x * blockDim.x;
+    int y = threadIdx.x;
+
+    int output_index = x + y;
+
+    float result;
+
     if (0 <= i && i < width && 0 <= j && j < height)
     {
-        return image[j * width + i];
+        printf("sweet spot\n");
+        result = image[j * width + i];
     }
 
     else if ((0 <= i && i < width) || (0 <= j && j < height))
     {
-        return 1;
+        printf("one is in\n");
+        result = 1;
     }
     else
     {
-        return 0;
+        printf("both are out\n");
+        result = 0;
     }
+
+    return result;
 }
 
 __global__ void convolve_kernel(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
