@@ -19,8 +19,8 @@ __device__ float calcFx(const unsigned char* image, int i, int j, int width, int
 
 __global__ void convolve_kernel(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
-    int y = blockIdx.x * blockDim.x;
-    int x = threadIdx.x;
+    int x = blockIdx.x * blockDim.x;
+    int y = threadIdx.x;
 
     int output_index = x + y;
 
