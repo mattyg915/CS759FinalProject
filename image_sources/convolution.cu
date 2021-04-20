@@ -11,18 +11,27 @@ __device__ float calcFx(const unsigned char* image, int i, int j, int width, int
 
     if (0 <= i && i < width && 0 <= j && j < height)
     {
-        printf("sweet spot\n");
+        if (output_index == 512)
+        {
+            printf("sweet spot\n");
+        }
         result = image[j * width + i];
     }
 
     else if ((0 <= i && i < width) || (0 <= j && j < height))
     {
-        printf("one is in\n");
+        if (output_index == 512)
+        {
+            printf("one is in\n");
+        }
         result = 1;
     }
     else
     {
-        printf("both are out\n");
+        if (output_index == 512)
+        {
+            printf("both are out\n");
+        }
         result = 0;
     }
 
