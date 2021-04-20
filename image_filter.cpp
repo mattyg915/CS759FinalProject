@@ -38,22 +38,14 @@ int main(int argc, char* argv[])
 
     auto* pixels = new unsigned char[width * height];
     auto* sharpened_output = new unsigned char[width * height];
-    auto* gaussian_blurred_output = new unsigned char[width * height];
-    auto* edge_detect_output = new unsigned char[width * height];
     float sharpen_kernel[9] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
-    float gaussian_blur_kernel[9] = {0.0625, 0.125, 0.0625, 0.125, 0.25, 0.125, 0.0625, 0.125, 0.0625};
-    float edge_detect_kernel[9] = {-1, -1, -1, -1, 8, -1, -1, -1, -1};
 
     rgb_to_greyscale(width, height, image, pixels);
 
     convolve(pixels, sharpened_output, width, height, sharpen_kernel, 3);
-    convolve(pixels, gaussian_blurred_output, width, height, gaussian_blur_kernel, 3);
-    convolve(pixels, edge_detect_output, width, height, edge_detect_kernel, 3);
 
     stbi_write_jpg("output.jpg", width, height, 1, pixels, 100);
     stbi_write_jpg("output_sharpened.jpg", width, height, 1, sharpened_output, 100);
-    stbi_write_jpg("output_blurred.jpg", width, height, 1, gaussian_blurred_output, 100);
-    stbi_write_jpg("output_edge_detect.jpg", width, height, 1, edge_detect_output, 100);
 
     return 0;
 }
