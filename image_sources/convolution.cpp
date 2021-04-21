@@ -29,7 +29,7 @@ void convolve(unsigned char* image, unsigned char* output, int width, int height
                 {
                     float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
                     output[output_index] += mask[i * m + j] * result;
-                    if (output_index == 512)
+                    if (output_index == ((height * width) / 2))
                     {
                         printf("x = %d | y = %d | i = %d | j = %d | calcFx[i] = %d | calcFx[j] = %d\n", x, y, i, j, x + i - m / 2, y + j - m / 2);
                         printf("result is %f\n", result);
