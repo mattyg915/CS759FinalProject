@@ -19,30 +19,29 @@ __device__ float calcFx(const unsigned char* image, int i, int j, int width, int
 __global__ void convolve_kernel(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
+    int x = output_index % width;
+    int y = output_index / width;
 
-    output[output_index] = 0;
+
+    float accumulator = 0;
     for (int i = 0; i < m; i++)
     {
         for (int j = 0; j < m; j++)
         {
             float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
-            output[output_index] += mask[i * m + j] * result;
-            if (output_index == ((height * width) / 2))
-            {
-                printf("blockIdx.x = %d | blockDim.x = %d | threadIdx.x = %d\n", blockIdx.x, blockDim.x, threadIdx.x);
-                printf("x = %d | y = %d | i = %d | j = %d | calcFx[i] = %d | calcFx[j] = %d\n", x, y, i, j, x + i - m / 2, y + j - m / 2);
-                printf("result is %f\n", result);
-            }
+            accumulator += mask[i * m + j] * result;
         }
     }
+
+    output[output_index] = accumulator;
 }
 
 void convolve(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
     int size = width * height;
     int maskSize = m * m;
-    int threads_per_block = height;
-    int num_blocks = width;
+    int threads_per_block = 256;
+    int num_blocks = (size - 1) / threads_per_block + 1;
 
     // copy data to the device
     unsigned char *dImage, *dOutput;

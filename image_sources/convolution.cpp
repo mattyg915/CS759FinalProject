@@ -15,27 +15,24 @@ float calcFx(const unsigned char* image, int i, int j, int width, int height) {
     }
 }
 
-void convolve(unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
+void convolve(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
     for (int y = 0; y < height; y++)
     {
         for (int x = 0; x < width; x++)
         {
             int output_index = y * width + x;
-            output[output_index] = 0;
+            float accumulator = 0;
             for (int i = 0; i < m; i++)
             {
                 for (int j = 0; j < m; j++)
                 {
                     float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
-                    output[output_index] += mask[i * m + j] * result;
-                    if (output_index == ((height * width) / 2))
-                    {
-                        printf("x = %d | y = %d | i = %d | j = %d | calcFx[i] = %d | calcFx[j] = %d\n", x, y, i, j, x + i - m / 2, y + j - m / 2);
-                        printf("result is %f\n", result);
-                    }
+                    float accumulatee = mask[i * m + j] * result;
+                    accumulator += accumulatee;
                 }
             }
+            output[output_index] = accumulator;
         }
     }
 }
