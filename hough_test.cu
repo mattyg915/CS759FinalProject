@@ -3,7 +3,7 @@
 #include <cmath>
 #include <cstring>
 #include "image_headers/image_utils.h"
-#include "image_headers/convolution.h"
+#include "image_headers/hough.cuh"
 
 extern "C" {
 #define STB_IMAGE_IMPLEMENTATION
