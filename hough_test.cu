@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
 	cudaMalloc((void**)&dline_matrix, 2 * max_r * 360 * sizeof(int));
 
 	// Populate line_matrix with zeros
-	for (size_t = 0; i < 2 * max_r * 360; i++) {
+	for (size_t i = 0; i < 2 * max_r * 360; i++) {
 		line_matrix[i] = 0;
 	}
 
