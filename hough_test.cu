@@ -53,6 +53,16 @@ int main(int argc, char* argv[])
 	pixels[8025] = 255;
 	pixels[5678] = 255;
 
+	// make a copy of pixels on the device
+	int *intpixels = new int[width * height];
+	for (int i = 0; i < width*height; i++) {
+		intpixels[i] = (int)pixels[i];
+	}
+	int *dpixels;
+	cudaMalloc((void**)&dpixels, width * height * sizeof(int));
+	cudaMemcpy(dpixels, intpixels, width * height * sizeof(int), cudaMemcpyHostToDevice);
+
+
 	stbi_write_jpg("hough_output.jpg", width, height, 1, pixels, 100);
 
 	// run the hough test to find the equation of the best line
@@ -62,19 +72,29 @@ int main(int argc, char* argv[])
 	int max_r = (int)sqrt(width*width +  height*height);
 
 	// SELF: Update this section to declare a 2d array for the (r, theta) pairs and increment in parallel
+	int *line_matrix, *dline_matrix;
+	line_matrix = (int*)malloc(2 * max_r * 360 * sizeof(int));
+	cudaMalloc((void**)&dline_matrix, 2 * max_r * 360 * sizeof(int));
 
+	// Populate line_matrix with zeros
+	for (size_t = 0; i < 2 * max_r * 360; i++) {
+		line_matrix[i] = 0;
+	}
+
+	// Copy line_matrix to device
+	cudaMemcpy(dline_matrix, line_matrix, 2 * max_r * 360 * sizeof(int), cudaMemcpyHostToDevice);
+
+	// Call kernel to accumulate counts in dline_matrix
+	hough(dline_matrix, dpixels, width, height, max_r, 1024);
+
+	// Copy line_matrix back to host
+	cudaMemcpy(line_matrix, dline_matrix, 2 * max_r * 360 * sizeof(int), cudaMemcpyDeviceToHost);
+
+
+	// Use updated line_matrix to compute best lines
 	for (int r = -1 * max_r; r < max_r; r++) {
 		for (int theta = 0; theta < 360; theta++) {
-			int curr_count = 0;
-			for (int i = 0; i < width; i++) {
-				for (int j = 0; j < height; j++) {
-					if (r == (int)(i*cos(theta) + j*sin(theta))) {
-						if (pixels[i * width + j] == 255) {
-							curr_count++;
-						}
-					}
-				}
-			}
+			int curr_count = line_matrix[360 * (r + max_r) + theta];
 			if (curr_count > best_count[numlines - 1]) {
 				insert(curr_count, r, theta, best_count, best_r, best_theta, numlines);
 			}
@@ -103,7 +123,10 @@ int main(int argc, char* argv[])
 	}
 
 	//stbi_write_jpg("hough_output_with_lines.jpg", width, height, 1, pixels, 100);
-
+	// free memory
+	free(line_matrix);
+	cudaFree(dline_matrix);
+	cudaFree(dpixels);
 
 	return 0;
 }
