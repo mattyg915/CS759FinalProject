@@ -55,9 +55,19 @@ int main(int argc, char* argv[])
 
     to_grey_end = high_resolution_clock::now();
     to_grey_duration = std::chrono::duration_cast<duration<double, std::milli>>(to_grey_end - to_grey_start);
-    cout << to_grey_duration.count() << "ms" << std::endl;
+    cout  << "to greyscale took " << to_grey_duration.count() << "ms" << std::endl;
+
+    high_resolution_clock::time_point convolve_start;
+    high_resolution_clock::time_point convolve_end;
+    duration<double, std::milli> convolve_duration;
+
+    convolve_start = high_resolution_clock::now();
 
     convolve(pixels, sharpened_output, width, height, sharpen_kernel, 3);
+
+    convolve_end = high_resolution_clock::now();
+    convolve_duration = std::chrono::duration_cast<duration<double, std::milli>>(convolve_end - convolve_start);
+    cout << "convolve took " << convolve_duration.count() << "ms" << std::endl;
 
     stbi_write_jpg("output.jpg", width, height, 1, pixels, 100);
     stbi_write_jpg("output_sharpened_synchronous.jpg", width, height, 1, sharpened_output, 100);
