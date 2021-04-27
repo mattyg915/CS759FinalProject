@@ -15,7 +15,7 @@ float calcFx(const unsigned char* image, int i, int j, int width, int height) {
     }
 }
 
-void convolve(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
+void convolve(unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
     for (int y = 0; y < height; y++)
     {
