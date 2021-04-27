@@ -68,10 +68,10 @@ void convolve(const unsigned char* image, unsigned char* output, int width, int 
     cudaEventRecord(stop, 0);
     cudaEventSynchronize(stop);
 
-    std::cout << numMs << std::endl;
-
     float numMs;
     cudaEventElapsedTime(&numMs, start, stop);
+
+    std::cout << numMs << "ms" << std::endl;
 
     // copy back
     cudaMemcpy(output, dOutput, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
