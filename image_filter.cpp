@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <chrono>
 #include "image_headers/image_utils.h"
 #include "image_headers/convolution.h"
 
@@ -13,6 +14,10 @@ extern "C" {
 int main(int argc, char* argv[])
 {
     #define CHANNEL_NUM 3
+
+    using std::cout;
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration;
 
     // Must have exactly 1 command line argument
     if (argc != 2)
@@ -33,19 +38,29 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    std::cout << "Image width = " << width << '\n';
-    std::cout << "Image height = " << height << '\n';
+    cout << "Image width = " << width << std::endl;
+    cout << "Image height = " << height << std::endl;
 
     auto* pixels = new unsigned char[width * height];
     auto* sharpened_output = new unsigned char[width * height];
     const float sharpen_kernel[9] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
 
+    high_resolution_clock::time_point to_grey_start;
+    high_resolution_clock::time_point to_grey_end;
+    duration<double, std::milli> to_grey_duration;
+
+    to_grey_start = high_resolution_clock::now();
+
     rgb_to_greyscale(width, height, image, pixels);
+
+    to_grey_end = high_resolution_clock::now();
+    to_grey_duration = std::chrono::duration_cast<duration<double, std::milli>>(to_grey_end - to_grey_start);
+    cout << to_grey_duration.count() << "ms" << std::endl;
 
     convolve(pixels, sharpened_output, width, height, sharpen_kernel, 3);
 
     stbi_write_jpg("output.jpg", width, height, 1, pixels, 100);
-    stbi_write_jpg("output_sharpened.jpg", width, height, 1, sharpened_output, 100);
+    stbi_write_jpg("output_sharpened_synchronous.jpg", width, height, 1, sharpened_output, 100);
 
     return 0;
 }

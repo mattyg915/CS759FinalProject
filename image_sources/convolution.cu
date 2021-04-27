@@ -1,5 +1,6 @@
 #include "../image_headers/convolution.cuh"
 #include <iostream>
+#include <cstdlib>
 
 __device__ float calcFx(const unsigned char* image, int i, int j, int width, int height) {
     if (0 <= i && i < width && 0 <= j && j < height)
@@ -53,9 +54,24 @@ void convolve(const unsigned char* image, unsigned char* output, int width, int 
     cudaMemcpy(dOutput, output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
     cudaMemcpy(dMask, mask, maskSize * sizeof(float), cudaMemcpyHostToDevice);
 
+    // event timers
+    cudaEvent_t start;
+    cudaEvent_t stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+
+    cudaEventRecord(start, 0);
 
     convolve_kernel<<<num_blocks, threads_per_block>>>(dImage, dOutput, width, height, dMask, m);
     cudaDeviceSynchronize();
+
+    cudaEventRecord(stop, 0);
+    cudaEventSynchronize(stop);
+
+    std::cout << numMs << std::endl;
+
+    float numMs;
+    cudaEventElapsedTime(&numMs, start, stop);
 
     // copy back
     cudaMemcpy(output, dOutput, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
