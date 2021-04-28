@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
 			}
 		}
 		// save image with each line added
-		std::string s = "hough_output_with_" + std::to_string(k+1) + "_lines.jpg";
+		std::string s = "hough_output_with_" + std::to_string(k+1) + "_lines_gpu.jpg";
 		int n = s.length();
 		char s_char[n+1];
 		strcpy(s_char, s.c_str());

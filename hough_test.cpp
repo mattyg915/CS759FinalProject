@@ -68,6 +68,11 @@ int main(int argc, char* argv[])
 	int* best_r = new int[numlines];
 	int* best_theta = new int[numlines];
 	int* best_count = new int[numlines];
+	for (int i = 0; i < numlines; i++) {
+		best_r[i] = 0;
+		best_theta[i] = 0;
+		best_count[i] = 0;
+	}
 	int max_r = (int)sqrt(width*width +  height*height);
 
 	// begin timing
