@@ -1,6 +1,7 @@
 #include "../image_headers/hough.cuh"
 #include <iostream>
 #include <cmath>
+#include <cstdio>
 
 __global__ void hough_kernel(int* line_matrix, int* image, int width, int height, int diag) {
 	int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -9,9 +10,12 @@ __global__ void hough_kernel(int* line_matrix, int* image, int width, int height
 
 	if (idx < width * height) {
 		for (int r = -1 * diag; r < diag; r++) {
-			for (int theta = 0; theta < 360; theta++) {
-				if (r == (int)(i * cos(theta) + j * sin(theta))) {
-					atomicAdd(line_matrix[(r + diag) * 360 + theta]);
+			for (float theta = 0; theta < 360; theta = theta + 1) {
+				if (r == (int)(i * cosf(theta) + j * sinf(theta))) {
+					//printf("Doing an add!!!");
+					if (image[i * width + j] == 255) {
+						atomicAdd(line_matrix + (r + diag) * 360 + (int)theta, 1);
+					}
 				}
 			}
 		}

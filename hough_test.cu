@@ -69,7 +69,13 @@ int main(int argc, char* argv[])
 	int* best_r = new int[numlines];
 	int* best_theta = new int[numlines];
 	int* best_count = new int[numlines];
+	for (int i = 0; i < numlines; i++) {
+		best_r[i] = 0;
+		best_theta[i] = 0;
+		best_count[i] = 0;
+	}
 	int max_r = (int)sqrt(width*width +  height*height);
+
 
 	// SELF: Update this section to declare a 2d array for the (r, theta) pairs and increment in parallel
 	int *line_matrix, *dline_matrix;
@@ -77,7 +83,7 @@ int main(int argc, char* argv[])
 	cudaMalloc((void**)&dline_matrix, 2 * max_r * 360 * sizeof(int));
 
 	// Populate line_matrix with zeros
-	for (size_t i = 0; i < 2 * max_r * 360; i++) {
+	for (int i = 0; i < 2 * max_r * 360; i++) {
 		line_matrix[i] = 0;
 	}
 
@@ -89,6 +95,13 @@ int main(int argc, char* argv[])
 
 	// Copy line_matrix back to host
 	cudaMemcpy(line_matrix, dline_matrix, 2 * max_r * 360 * sizeof(int), cudaMemcpyDeviceToHost);
+
+	for (int i = 0; i < 360 * 2 * max_r; i++) {
+		if (line_matrix[i] > 0) {
+			std::cout << line_matrix[i] << "\n";
+		}
+	}
+	//std::cout << line_matrix[360 * (max_r - 1 + max_r) + 359] << "\n";
 
 
 	// Use updated line_matrix to compute best lines

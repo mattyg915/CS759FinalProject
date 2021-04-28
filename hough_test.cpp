@@ -83,6 +83,7 @@ int main(int argc, char* argv[])
 	std::cout << best_theta[0] << "\n";
 	std::cout << best_count[0] << "\n";
 
+
 	// update pixels with best line drawn on it
 	for (int k = 0; k < numlines; k++) {
 		for (int i = 0; i < width; i++) {
