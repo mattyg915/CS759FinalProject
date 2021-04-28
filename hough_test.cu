@@ -90,18 +90,26 @@ int main(int argc, char* argv[])
 	// Copy line_matrix to device
 	cudaMemcpy(dline_matrix, line_matrix, 2 * max_r * 360 * sizeof(int), cudaMemcpyHostToDevice);
 
+	// generate timing variables
+	cudaEvent_t startEvent, stopEvent;
+	cudaEventCreate(&startEvent);
+	cudaEventCreate(&stopEvent);
+
+	// timing
+	cudaEventRecord(startEvent, 0);
+
 	// Call kernel to accumulate counts in dline_matrix
 	hough(dline_matrix, dpixels, width, height, max_r, 1024);
 
+	// timing
+	cudaEventRecord(stopEvent, 0);
+	cudaEventSynchronize(stopEvent);
+	float elapsedTime;
+	cudaEventElapsedTime(&elapsedTime, startEvent, stopEvent);
+	std::cout << elapsedTime << "\n";
+
 	// Copy line_matrix back to host
 	cudaMemcpy(line_matrix, dline_matrix, 2 * max_r * 360 * sizeof(int), cudaMemcpyDeviceToHost);
-
-	for (int i = 0; i < 360 * 2 * max_r; i++) {
-		if (line_matrix[i] > 0) {
-			std::cout << line_matrix[i] << "\n";
-		}
-	}
-	//std::cout << line_matrix[360 * (max_r - 1 + max_r) + 359] << "\n";
 
 
 	// Use updated line_matrix to compute best lines
@@ -114,9 +122,9 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	std::cout << best_r[0] << "\n";
-	std::cout << best_theta[0] << "\n";
-	std::cout << best_count[0] << "\n";
+	//std::cout << best_r[0] << "\n";
+	//std::cout << best_theta[0] << "\n";
+	//std::cout << best_count[0] << "\n";
 
 	// update pixels with best line drawn on it
 	for (int k = 0; k < numlines; k++) {

@@ -2,8 +2,12 @@
 #include <vector>
 #include <cmath>
 #include <cstring>
+#include <chrono>
 #include "image_headers/image_utils.h"
 #include "image_headers/convolution.h"
+using std::cout;
+using std::chrono::high_resolution_clock;
+using std::chrono::duration;
 
 extern "C" {
 #define STB_IMAGE_IMPLEMENTATION
@@ -40,6 +44,11 @@ int main(int argc, char* argv[])
 	// take command line input (number of lines to display)
 	int numlines = atoi(argv[1]);
 
+	// declare timing variables
+	high_resolution_clock::time_point start;
+	high_resolution_clock::time_point end;
+	duration<double, std::milli> duration_sec;
+
 	// initialize an array with mostly black but a couple of white pixels
 	int width = 200;
 	int height = 200;
@@ -61,6 +70,9 @@ int main(int argc, char* argv[])
 	int* best_count = new int[numlines];
 	int max_r = (int)sqrt(width*width +  height*height);
 
+	// begin timing
+	start = high_resolution_clock::now();
+
 	for (int r = -1 * max_r; r < max_r; r++) {
 		for (int theta = 0; theta < 360; theta++) {
 			int curr_count = 0;
@@ -79,9 +91,16 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	std::cout << best_r[0] << "\n";
-	std::cout << best_theta[0] << "\n";
-	std::cout << best_count[0] << "\n";
+	// end timing
+	end = high_resolution_clock::now();
+	// print the time taken by scan in ms
+	duration_sec = std::chrono::duration_cast<duration<double, std::milli> >(end - start);
+	std::cout << duration_sec.count() << "\n";
+
+
+	//std::cout << best_r[0] << "\n";
+	//std::cout << best_theta[0] << "\n";
+	//std::cout << best_count[0] << "\n";
 
 
 	// update pixels with best line drawn on it
