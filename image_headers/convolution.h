@@ -3,6 +3,6 @@
 #include <vector>
 #include <cstddef>
 
-void convolve(unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m);
+void convolve(uint8_t* image, uint8_t* output, size_t width, size_t height, const float *mask, size_t m);
 
 #endif
