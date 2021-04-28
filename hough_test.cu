@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 	// Must have exactly 1 command line argument
 	if (argc != 2)
 	{
-		std::cerr << "Usage: ./main numlines" << std::endl;
+		std::cerr << "Usage: ./hough_test numlines" << std::endl;
 		exit(1);
 	}
 
@@ -121,10 +121,6 @@ int main(int argc, char* argv[])
 			}
 		}
 	}
-
-	//std::cout << best_r[0] << "\n";
-	//std::cout << best_theta[0] << "\n";
-	//std::cout << best_count[0] << "\n";
 
 	// update pixels with best line drawn on it
 	for (int k = 0; k < numlines; k++) {
