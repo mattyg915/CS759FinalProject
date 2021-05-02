@@ -18,7 +18,7 @@ bool load_image(std::vector<unsigned char>& image, const char* filename, int& x,
     return (data != nullptr);
 }
 
-__global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char* output, width, height)
+__global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char* output)
 {
     int num_channels = 3;
 
@@ -41,17 +41,20 @@ __global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char
  * @param orig_image original image array
  * @param output array to output to
  */
-void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& orig_image, unsigned char* output)
+void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& image, unsigned char* output)
 {
-    int size = width * height;
+    int num_channels = 3;
+    int input_size = width * height * num_channels;
+    int output_size = width * height;
     int threads_per_block = 256;
-    int num_blocks = (size - 1) / threads_per_block + 1;
+
+    int num_blocks = (output_size - 1) / threads_per_block + 1;
 
     // copy data to the device
     unsigned char *dImage, *dOutput;
-    cudaMalloc((void **)&dImage, size * sizeof(unsigned char));
-    cudaMalloc((void **)&dOutput, size * sizeof(unsigned char));
-    cudaMemcpy(dImage, orig_image, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMalloc((void **)&dImage, input_size * sizeof(unsigned char));
+    cudaMalloc((void **)&dOutput, output_size * sizeof(unsigned char));
+    cudaMemcpy(dImage, image, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
     cudaMemcpy(dOutput, output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
 
     // event timers
@@ -62,7 +65,7 @@ void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& orig_im
 
     cudaEventRecord(start, 0);
 
-    rgb_to_greyscale_kernel<<<num_blocks, threads_per_block>>>(dImage, dOutput, width, height);
+    rgb_to_greyscale_kernel<<<num_blocks, threads_per_block>>>(dImage, dOutput);
     cudaDeviceSynchronize();
 
     cudaEventRecord(stop, 0);
@@ -71,7 +74,7 @@ void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& orig_im
     float numMs;
     cudaEventElapsedTime(&numMs, start, stop);
 
-    std::cout << "convolution in cuda took " << numMs << "ms" << std::endl;
+    std::cout << "to greyscale in cuda took " << numMs << "ms" << std::endl;
 
     // copy back
     cudaMemcpy(output, dOutput, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
