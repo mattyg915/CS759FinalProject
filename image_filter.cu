@@ -5,7 +5,7 @@
 
 extern "C" {
 #define STB_IMAGE_IMPLEMENTATION
-#include "image_headers/stb_image.cuh"
+#include "image_headers/stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "image_headers/stbi_image_write.h"
 }
