@@ -11,7 +11,7 @@ bool load_image(std::vector<unsigned char>& image, const char* filename, int& wi
     unsigned char* data = stbi_load(filename, &width, &height, &features, force_features);
     if (data != nullptr)
     {
-        image = std::vector<unsigned char>(data, data + x * y * force_features);
+        image = std::vector<unsigned char>(data, data + width * height * force_features);
     }
     stbi_image_free(data);
     return (data != nullptr);
