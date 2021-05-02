@@ -41,6 +41,5 @@ void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& orig_im
 
             output[p_index++] = grey;
         }
-
     }
 }

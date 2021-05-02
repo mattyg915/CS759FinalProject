@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 
     convolve_end = high_resolution_clock::now();
     convolve_duration = std::chrono::duration_cast<duration<double, std::milli>>(convolve_end - convolve_start);
-    cout << "convolve took " << convolve_duration.count() << "ms" << std::endl;
+    cout << "sequential convolution took " << convolve_duration.count() << "ms" << std::endl;
 
     stbi_write_jpg("output.jpg", width, height, 1, pixels, 100);
     stbi_write_jpg("output_sharpened_synchronous.jpg", width, height, 1, sharpened_output, 100);
