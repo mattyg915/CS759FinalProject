@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
     char* filename = argv[1];
 
     int width, height, features;
-    unsigned char image = new[];
+    unsigned char* image = new unsigned char[];
     bool image_loaded = load_image(image, filename, width, height, features, CHANNEL_NUM);
 
     if (!image_loaded)
