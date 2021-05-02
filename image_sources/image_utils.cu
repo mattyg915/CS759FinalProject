@@ -8,7 +8,7 @@ bool load_image(std::vector<unsigned char>& image, const char* filename, int& wi
 {
     // ... force_features = # 8-bit components per pixel ...
     // ... 'features' will always be the number that it would have been if you set force_features to 0
-    unsigned char* data = stbi_load(filename, &x, &y, &features, force_features);
+    unsigned char* data = stbi_load(filename, &width, &height, &features, force_features);
     if (data != nullptr)
     {
         image = std::vector<unsigned char>(data, data + x * y * force_features);
