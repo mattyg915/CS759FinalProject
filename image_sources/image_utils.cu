@@ -41,7 +41,7 @@ __global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char
  * @param orig_image original image array
  * @param output array to output to
  */
-void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& image, unsigned char* output)
+void rgb_to_greyscale(int width, int height, unsigned char* image, unsigned char* output)
 {
     int num_channels = 3;
     int input_size = width * height * num_channels;
@@ -77,5 +77,5 @@ void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& image, 
     std::cout << "to greyscale in cuda took " << numMs << "ms" << std::endl;
 
     // copy back
-    cudaMemcpy(output, dOutput, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
+    cudaMemcpy(output, dOutput, output_size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 }

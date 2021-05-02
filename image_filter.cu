@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "image_headers/image_utils.h"
+#include "image_headers/image_utils.cuh"
 #include "image_headers/convolution.cuh"
 
 extern "C" {
@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
     char* filename = argv[1];
 
     int width, height, features;
-    std::vector<unsigned char> image;
+    unsigned char image = new[];
     bool image_loaded = load_image(image, filename, width, height, features, CHANNEL_NUM);
 
     if (!image_loaded)
