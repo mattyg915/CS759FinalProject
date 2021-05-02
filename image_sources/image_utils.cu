@@ -4,11 +4,10 @@
 #include "../image_headers/stb_image.h"
 #include "../image_headers/image_utils.cuh"
 
-bool load_image(unsigned char* image, const char* filename, int& x, int& y, int& features, int force_features)
+bool load_image(std::vector<unsigned char>& image, const char* filename, int& width, int& height, int& features, int force_features)
 {
-    // ... x = width, y = height, n = # 8-bit components per pixel ...
-    // ... replace '0' with '1'..'4' to force that many components per pixel
-    // ... but 'features' will always be the number that it would have been if you said 0
+    // ... force_features = # 8-bit components per pixel ...
+    // ... 'features' will always be the number that it would have been if you set force_features to 0
     unsigned char* data = stbi_load(filename, &x, &y, &features, force_features);
     if (data != nullptr)
     {
@@ -41,7 +40,7 @@ __global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char
  * @param orig_image original image array
  * @param output array to output to
  */
-void rgb_to_greyscale(int width, int height, unsigned char* image, unsigned char* output)
+void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& image, unsigned char* output)
 {
     int num_channels = 3;
     int input_size = width * height * num_channels;

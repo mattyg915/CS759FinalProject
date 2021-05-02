@@ -5,7 +5,7 @@
 
 extern "C" {
 #define STB_IMAGE_IMPLEMENTATION
-#include "image_headers/stb_image.h"
+#include "image_headers/stb_image.cuh"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "image_headers/stbi_image_write.h"
 }
@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
     char* filename = argv[1];
 
     int width, height, features;
-    unsigned char* image = new unsigned char[];
+    std::vector<unsigned char> image;
     bool image_loaded = load_image(image, filename, width, height, features, CHANNEL_NUM);
 
     if (!image_loaded)
