@@ -4,7 +4,7 @@
 #include "../image_headers/stb_image.h"
 #include "../image_headers/image_utils.cuh"
 
-bool load_image(std::vector<unsigned char>& image, const char* filename, int& x, int& y, int& features, int force_features)
+bool load_image(unsigned char* image, const char* filename, int& x, int& y, int& features, int force_features)
 {
     // ... x = width, y = height, n = # 8-bit components per pixel ...
     // ... replace '0' with '1'..'4' to force that many components per pixel
