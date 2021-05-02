@@ -54,8 +54,8 @@ void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& image, 
     unsigned char *dImage, *dOutput;
     cudaMalloc((void **)&dImage, input_size * sizeof(unsigned char));
     cudaMalloc((void **)&dOutput, output_size * sizeof(unsigned char));
-    cudaMemcpy(dImage, image, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
-    cudaMemcpy(dOutput, output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dImage, image, input_size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dOutput, output, output_size * sizeof(unsigned char), cudaMemcpyHostToDevice);
 
     // event timers
     cudaEvent_t start;
