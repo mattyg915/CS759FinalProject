@@ -45,7 +45,7 @@ void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& image, 
     int num_channels = 3;
     int input_size = width * height * num_channels;
     int output_size = width * height;
-    int threads_per_block = 256;
+    int threads_per_block = 1024;
 
     int num_blocks = (output_size - 1) / threads_per_block + 1;
 
