@@ -26,7 +26,11 @@ __global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char
 
     uchar4* rgb = reinterpret_cast<uchar4 *>(orig_image + index);
 
-    double grey = (0.299 * rgb.x) + (0.299 * rgb.w) + (0.299 * rgb.z);
+    double r = rgb.x;
+    double g = rgb.y;
+    double b = rgb.z;
+
+    double grey = 0.299 * x + 0.299 * w + 0.299 * z;
 
     output[output_index] = grey;
 }
