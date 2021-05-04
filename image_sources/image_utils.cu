@@ -24,13 +24,9 @@ __global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
     int index = num_channels * (output_index);
 
-    uchar4 rgb = orig_image[index];
+    uchar4* rgb = *reinterpret_cast<uchar4 *>(&orig_image[index]);
 
-    double r = 0.299 * rgb[0];
-    double g = 0.587 * rgb[1];
-    double b = 0.114 * rgb[2];
-
-    double grey = r + g + b;
+    double grey = (0.299 * rgb.x) + (0.299 * rgb.w) + (0.299 * rgb.z);
 
     output[output_index] = grey;
 }
