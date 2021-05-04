@@ -19,15 +19,16 @@ bool load_image(std::vector<unsigned char>& image, const char* filename, int& wi
 
 __global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char* output)
 {
-    int num_channels = 4;
+    int num_channels = 3;
 
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
     int index = num_channels * (output_index);
 
-    unsigned int rgb_data = (int)orig_image[index];
-    unsigned char* rgb = reinterpret_cast<unsigned char *>(&rgb_data);
+    double r = orig_image[index];
+    double g = orig_image[index + 1];
+    double b = orig_image[index + 2];
 
-    double grey = 0.299 * rgb[0] + 0.299 * rgb[1] + 0.299 * rgb[2];
+    double grey = 0.299 * r + 0.299 * g + 0.299 * ;
 
     output[output_index] = grey;
 }
@@ -41,7 +42,7 @@ __global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char
  */
 void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& image, unsigned char* output)
 {
-    int num_channels = 4;
+    int num_channels = 3;
     int input_size = width * height * num_channels;
     int output_size = width * height;
     int threads_per_block = 256;
