@@ -81,8 +81,8 @@ int main(int argc, char* argv[])
     canny_duration = std::chrono::duration_cast<duration<double, std::milli>>(canny_end - canny_start);
     cout << "convolve took " << canny_duration.count() << "ms" << std::endl;
 
-    stbi_write_jpg("canny_square.jpg", width, height, 1, canny_output, 100);
-    stbi_write_jpg("canny_suppression_square.jpg", width, height, 1, suppresion_output, 100);
+    stbi_write_jpg("canny.jpg", width, height, 1, canny_output, 100);
+    stbi_write_jpg("canny_suppression.jpg", width, height, 1, suppresion_output, 100);
 
     //////////////////////////// hough transform starts here ////////////////////////////
 
@@ -142,7 +142,7 @@ int main(int argc, char* argv[])
             }
         }
         // save image with each line added
-        std::string s = "square_hough_output_with_" + std::to_string(k+1) + "_lines.jpg";
+        std::string s = "hough_output_with_" + std::to_string(k+1) + "_lines.jpg";
         int n = s.length();
         char s_char[n+1];
         strcpy(s_char, s.c_str());
