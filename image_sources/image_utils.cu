@@ -24,11 +24,11 @@ __global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
     int index = num_channels * (output_index);
 
-    unsigned char r = 0.299 * orig_image[index];
-    unsigned char g = 0.587 * orig_image[index + 1];
-    unsigned char b = 0.114 * orig_image[index + 2];
+    double r = 0.299 * orig_image[index];
+    double g = 0.587 * orig_image[index + 1];
+    double b = 0.114 * orig_image[index + 2];
 
-    unsigned char grey = r + g + b;
+    double grey = r + g + b;
 
     output[output_index] = grey;
 }
@@ -45,7 +45,7 @@ void rgb_to_greyscale(int width, int height, std::vector<unsigned char>& image, 
     int num_channels = 3;
     int input_size = width * height * num_channels;
     int output_size = width * height;
-    int threads_per_block = 1024;
+    int threads_per_block = 32;
 
     int num_blocks = (output_size - 1) / threads_per_block + 1;
 
