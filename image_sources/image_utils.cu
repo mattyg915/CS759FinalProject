@@ -25,7 +25,7 @@ __global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char
     int index = num_channels * (output_index);
 
     unsigned int rgb_data = (int)orig_image[index];
-    unsigned char* rgb = reinterpret_cast<unsigned char *>(rgb_data);
+    unsigned char* rgb = reinterpret_cast<unsigned char *>(&rgb_data);
 
     printf("hit\n");
 
