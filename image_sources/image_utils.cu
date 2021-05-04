@@ -27,9 +27,15 @@ __global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char
     unsigned int rgb_data = (int)orig_image[index];
     unsigned char* rgb = reinterpret_cast<unsigned char *>(rgb_data);
 
+    printf("hit\n");
+
+    printf("%u\n", rgb[0]);
+
     unsigned char r = rgb[0];
     unsigned char g = rgb[1];
     unsigned char b = rgb[2];
+
+    printf("hit2\n");
 
     double grey = 0.299 * r + 0.299 * g + 0.299 * b;
 
