@@ -24,11 +24,12 @@ __global__ void rgb_to_greyscale_kernel(unsigned char* orig_image, unsigned char
     int output_index = blockIdx.x * blockDim.x + threadIdx.x;
     int index = num_channels * (output_index);
 
-    uchar4* rgb = reinterpret_cast<uchar4*>(orig_image + index);
+    unsigned int rgb_data = (int)orig_image[index];
+    unsigned char* rgb = reinterpret_cast<char *>(rgb_data)
 
-    unsigned char r = rgb->x;
-    unsigned char g = rgb->y;
-    unsigned char b = rgb->z;
+    unsigned char r = rgb[0];
+    unsigned char g = rgb[1];
+    unsigned char b = rgb[2];
 
     double grey = 0.299 * r + 0.299 * g + 0.299 * b;
 
