@@ -12,7 +12,7 @@ extern "C" {
 
 int main(int argc, char* argv[])
 {
-#define CHANNEL_NUM 3
+#define CHANNEL_NUM 4
 
     // Must have exactly 3 command line arguments
     if (argc != 2)
