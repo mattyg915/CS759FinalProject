@@ -89,5 +89,11 @@ int main(int argc, char* argv[])
 
     stbi_write_jpg("canny.jpg", width, height, 1, canny_output, 100);
 
+    // Free device global memory
+    cudaFree(dpixels);  cudaFree(dcanny_output);  cudaFree(dI_x);
+
+    // Free device global memory
+    cudaFree(dI_y);  cudaFree(dgradient);  cudaFree(dtheta);
+
     return 0;
 }
