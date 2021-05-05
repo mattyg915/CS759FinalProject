@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
     // begin timing
     start = high_resolution_clock::now();
 
-    for (int r = -1 * max_r; r < max_r; r++) {
+    for (int r = 0; r <= max_r; r++) {
         for (int theta = 0; theta < 360; theta++) {
             int curr_count = 0;
             for (int i = 0; i < width; i++) {
