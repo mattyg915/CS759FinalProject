@@ -28,8 +28,7 @@ void convolve(unsigned char* image, unsigned char* output, int width, int height
                 for (int j = 0; j < m; j++)
                 {
                     float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
-                    float accumulatee = mask[i * m + j] * result;
-                    accumulator += accumulatee;
+                    accumulator += mask[i * m + j] * result;;
                 }
             }
             output[output_index] = accumulator;
