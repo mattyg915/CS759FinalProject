@@ -14,13 +14,23 @@ void canny(unsigned char* image, unsigned char* output, float* theta, float* gra
     float k_x[9] = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
     float k_y[9] = {1, 2, 1, 0, 0, 0, -1, -2 , -1};
 
+    float *dgaussian, *dKx;
+    float *dKy;
+
+    cudaMalloc((void **)&dgaussian, 9 * sizeof(float));
+    cudaMalloc((void **)&dKx, 9 * sizeof(float));
+    cudaMalloc((void **)&dKy, 9 * sizeof(float));
+    cudaMemcpy(dgaussian, gaussian_blur_kernel, 9 * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(dKx, k_x, 9 * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(dKy, k_y, 9 * sizeof(float), cudaMemcpyHostToDevice);
+
     int size = width * height;
     int threads_per_block = 256;
     int num_blocks = (size - 1) / threads_per_block + 1;
 
-    convolve_kernel<<<num_blocks, threads_per_block>>>(image, output, width, height, gaussian_blur_kernel, 3);
-    convolve_kernel2<<<num_blocks, threads_per_block>>>(image, I_x, width, height, k_x, 3);
-    convolve_kernel2<<<num_blocks, threads_per_block>>>(image, I_y, width, height, k_y, 3);
+    convolve_kernel<<<num_blocks, threads_per_block>>>(image, output, width, height, dgaussian, 3);
+    convolve_kernel2<<<num_blocks, threads_per_block>>>(image, I_x, width, height, dKx, 3);
+    convolve_kernel2<<<num_blocks, threads_per_block>>>(image, I_y, width, height, dKy, 3);
 
     gradient_kernel<<<num_blocks, threads_per_block>>>(I_x, I_y, gradient, width);
     angle_kernel<<<num_blocks, threads_per_block>>>(I_x, I_y, theta, width);
