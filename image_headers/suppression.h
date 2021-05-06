@@ -3,6 +3,6 @@
 #include <vector>
 #include <cstddef>
 
-void suppression(uint8_t* image, uint8_t* output, size_t width, size_t height, const float *gradient, const float *theta);
+void suppression(unsigned char* image, unsigned char* output, size_t width, size_t height, const float *gradient, const float *theta);
 
 #endif
