@@ -37,6 +37,26 @@ __global__ void convolve_kernel(const unsigned char* image, unsigned char* outpu
     output[output_index] = accumulator;
 }
 
+__global__ void convolve_kernel2(const unsigned char* image, float* output, int width, int height, const float *mask, int m)
+{
+    int output_index = blockIdx.x * blockDim.x + threadIdx.x;
+    int x = output_index % width;
+    int y = output_index / width;
+
+
+    float accumulator = 0;
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            float result = calcFx(image, x + i - m / 2, y + j - m / 2, width, height);
+            accumulator += mask[i * m + j] * result;
+        }
+    }
+
+    output[output_index] = accumulator;
+}
+
 void convolve(const unsigned char* image, unsigned char* output, int width, int height, const float *mask, int m)
 {
     int size = width * height;
@@ -71,7 +91,7 @@ void convolve(const unsigned char* image, unsigned char* output, int width, int 
     float numMs;
     cudaEventElapsedTime(&numMs, start, stop);
 
-    std::cout << "convolution in cuda took " << numMs << "ms" << std::endl;
+    std::cout << numMs << "ms" << std::endl;
 
     // copy back
     cudaMemcpy(output, dOutput, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);

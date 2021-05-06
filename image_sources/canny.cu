@@ -8,7 +8,7 @@
 #include <vector>
 #include <iostream>
 
-void canny(uint8_t* image, uint8_t* output, float* theta, float* gradient, uint8_t* I_x, uint8_t* I_y, size_t width, size_t height) {
+void canny(unsigned char* image, unsigned char* output, float* theta, float* gradient, float* I_x, float* I_y, size_t width, size_t height) {
 
     float gaussian_blur_kernel[9] = {0.0625, 0.125, 0.0625, 0.125, 0.25, 0.125, 0.0625, 0.125, 0.0625};
     float k_x[9] = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
@@ -19,8 +19,8 @@ void canny(uint8_t* image, uint8_t* output, float* theta, float* gradient, uint8
     int num_blocks = (size - 1) / threads_per_block + 1;
 
     convolve_kernel<<<num_blocks, threads_per_block>>>(image, output, width, height, gaussian_blur_kernel, 3);
-    convolve_kernel<<<num_blocks, threads_per_block>>>(image, I_x, width, height, k_x, 3);
-    convolve_kernel<<<num_blocks, threads_per_block>>>(image, I_y, width, height, k_y, 3);
+    convolve_kernel2<<<num_blocks, threads_per_block>>>(image, I_x, width, height, k_x, 3);
+    convolve_kernel2<<<num_blocks, threads_per_block>>>(image, I_y, width, height, k_y, 3);
 
     gradient_kernel<<<num_blocks, threads_per_block>>>(I_x, I_y, gradient, width);
     angle_kernel<<<num_blocks, threads_per_block>>>(I_x, I_y, theta, width);
