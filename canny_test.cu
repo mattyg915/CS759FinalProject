@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
 	// timing
 	cudaEventRecord(startEvent, 0);
 
-	canny(pixels, canny_output, theta, gradient, I_x, I_y, width, height);
+	canny(dpixels, dcanny_output, dtheta, dgradient, dI_x, dI_y, width, height);
 
 	// timing
 	cudaEventRecord(stopEvent, 0);
