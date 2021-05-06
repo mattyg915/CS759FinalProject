@@ -44,21 +44,23 @@ int main(int argc, char* argv[])
 
     auto* pixels = new unsigned char[width * height];
     auto* canny_output = new unsigned char[width * height];
-    auto* I_x = new uint8_t[width * height];
-    auto* I_y = new uint8_t[width * height];
+    float* I_x = new float[width * height];
+    float* I_y = new float[width * height];
     float* gradient = new float[width * height];
     float* theta = new float[width * height];
 
     // copy data to the device
     unsigned char *dpixels, *dcanny_output;
-    auto *dI_x, *dI_y;
+    float *dI_x, *dI_y;
     float *dgradient, *dtheta;
+
+    size_t size  = width * height;
 
     cudaMalloc((void **)&dpixels, size * sizeof(unsigned char));
     cudaMalloc((void **)&dcanny_output, size * sizeof(unsigned char));
     
-    cudaMalloc((void **)&dI_x, size * sizeof(auto));
-    cudaMalloc((void **)&dI_y, size * sizeof(auto));
+    cudaMalloc((void **)&dI_x, size * sizeof(float));
+    cudaMalloc((void **)&dI_y, size * sizeof(float));
     
     cudaMalloc((void **)&dgradient, size * sizeof(float));
     cudaMalloc((void **)&dtheta, size * sizeof(float));
