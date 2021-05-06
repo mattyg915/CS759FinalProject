@@ -12,16 +12,16 @@ __global__ void suppression_kernel(unsigned char* image, unsigned char* output, 
     float pi = 3.14159265358979;
 
     if ((x > 0) && (x<height)) {
-        if ((y > 0) && (y < height)) {
+        if ((y > 0) && (y < width) && (((x+1)*width + y + 1) < width*height)) {
             int q = 255;
             int r = 255;
 
-            float angle = theta[x * height + y];
+            float angle = theta[x * width + y];
             angle = (angle * 180) / pi;
 
             if (( (0 <= angle) && (angle < 22.5)) || ((157.5 <= angle) && (angle <= 180))){
                 q = image[x*width + (y+1)];
-                r = image[x*width + (y - 1)];
+                r = image[x*width + (y-1)];
             }
             else if ((22.5 <= angle) && (angle < 67.5)) {
                 q = image[(x+1)*width + (y-1)];

@@ -13,7 +13,7 @@ __global__ void hystersis_kernel(unsigned char* image, unsigned char* output, si
     if ((output[output_index]) > 0 && (output[output_index] < strong)) {
         for (int k = -1; k < 2; k++) {
             for (int l = -1; l<2; l++) {
-                if (output[(x+k)*width + (y+l)] == strong) {
+                if ((((x+k)*width + (y+l)) < width * height) && output[(x+k)*width + (y+l)] == strong) {
                     output[output_index] = strong;
                     k = 2;
                     l = 2;
