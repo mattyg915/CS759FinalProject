@@ -66,6 +66,11 @@ int main(int argc, char* argv[])
     cudaMalloc((void **)&dtheta, size * sizeof(float));
 
     cudaMemcpy(dpixels, pixels, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dcanny_output, canny_output, size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dI_x, I_x, size * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(dI_y, I_y, size * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(dgradient, gradient, size * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(dtheta, theta, size * sizeof(float), cudaMemcpyHostToDevice);
 
     rgb_to_greyscale(width, height, image, pixels);
 
