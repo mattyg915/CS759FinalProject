@@ -61,8 +61,8 @@ int main(int argc, char* argv[])
     auto* pixels = new unsigned char[width * height];
     auto* canny_output = new unsigned char[width * height];
     auto* suppresion_output = new unsigned char[width * height];
-    auto* I_x = new uint8_t[width * height];
-    auto* I_y = new uint8_t[width * height];
+    auto* I_x = new unsigned char[width * height];
+    auto* I_y = new unsigned char[width * height];
     float* gradient = new float[width * height];
     float* theta = new float[width * height];
     const float sharpen_kernel[9] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
