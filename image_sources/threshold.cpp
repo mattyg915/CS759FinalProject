@@ -1,7 +1,7 @@
 #include "../image_headers/threshold.h"
 #include <vector>
 
-void threshold_hystersis(uint8_t* image, uint8_t* output, size_t width, size_t height, float low_threshold, float high_threshold, int strong, int weak) {
+void threshold_hystersis(unsigned char* image, unsigned char* output, size_t width, size_t height, float low_threshold, float high_threshold, int strong, int weak) {
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             if (image[i*width + j] > high_threshold) {

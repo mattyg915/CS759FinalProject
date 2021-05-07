@@ -2,7 +2,7 @@
 #include <math.h>
 #include <vector>
 
-void generate_gradient(uint8_t* I_x, uint8_t* I_y, float* output, size_t width, size_t height) {
+void generate_gradient(unsigned char* I_x, unsigned char* I_y, float* output, size_t width, size_t height) {
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             float x = (float) I_x[i*width + j];
@@ -12,7 +12,7 @@ void generate_gradient(uint8_t* I_x, uint8_t* I_y, float* output, size_t width, 
     }
 }
 
-void generate_theta(uint8_t* I_x, uint8_t* I_y, float* output, size_t width, size_t height) {
+void generate_theta(unsigned char* I_x, unsigned char* I_y, float* output, size_t width, size_t height) {
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             float x = (float) I_x[i*width + j];

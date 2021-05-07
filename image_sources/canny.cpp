@@ -7,7 +7,7 @@
 #include <vector>
 #include <iostream>
 
-void canny(uint8_t* image, uint8_t* output, uint8_t* second_output, float* theta, float* gradient, uint8_t* I_x, uint8_t* I_y, size_t width, size_t height) {
+void canny(unsigned char* image, unsigned char* output, unsigned char* second_output, float* theta, float* gradient, unsigned char* I_x, unsigned char* I_y, size_t width, size_t height) {
 
     float gaussian_blur_kernel[9] = {0.0625, 0.125, 0.0625, 0.125, 0.25, 0.125, 0.0625, 0.125, 0.0625};
     float k_x[9] = {-1, 0, 1, -2, 0, 2, -1, 0, 1};

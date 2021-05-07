@@ -2,7 +2,7 @@
 #include <vector>
 #include <iostream>
 
-void suppression(uint8_t* image, uint8_t* output, size_t width, size_t height, const float *gradient, const float *theta) {
+void suppression(unsigned char* image, unsigned char* output, size_t width, size_t height, const float *gradient, const float *theta) {
     const float pi = 3.14159265358979323846;
     for (int x=1; x<height - 1; x++) {
         for (int y=1; y<width - 1; y++) {
