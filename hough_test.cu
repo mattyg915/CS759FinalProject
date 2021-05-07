@@ -31,27 +31,34 @@ void insert(int curr_count, int curr_r, int curr_theta, int* best_count, int* be
 int main(int argc, char* argv[])
 {
 	// Must have exactly 1 command line argument
-	if (argc != 2)
+	if (argc != 3)
 	{
-		std::cerr << "Usage: ./hough_test numlines" << std::endl;
+		std::cerr << "Usage: ./hough_test numlines dimension" << std::endl;
 		exit(1);
 	}
 
 	// take command line input (number of lines to display)
 	int numlines = atoi(argv[1]);
 
+	// take command line input (dimension of input image)
+	int width = atoi(argv[2]);
+	int height = width;
+
 	// initialize an array with mostly black but a couple of white pixels
-	int width = 200;
-	int height = 200;
 	auto* pixels = new uint8_t[width * height];
 	for (int i = 0; i < width*height; i++) {
-		pixels[i] = 0;
+		if (i / width > width / 3 && i / width < 2 * width / 3 && i % width > width / 3 && i % width < 2 * width / 3) {
+			pixels[i] = 255;
+		}
+		else{
+			pixels[i] = 0;
+		}
 	}
-	pixels[510] = 255;
-	pixels[2125] = 255;
-	pixels[12175] = 255;
-	pixels[8025] = 255;
-	pixels[5678] = 255;
+	//pixels[510] = 255;
+	//pixels[2125] = 255;
+	//pixels[12175] = 255;
+	//pixels[8025] = 255;
+	//pixels[5678] = 255;
 
 	// make a copy of pixels on the device
 	int *intpixels = new int[width * height];
@@ -63,7 +70,12 @@ int main(int argc, char* argv[])
 	cudaMemcpy(dpixels, intpixels, width * height * sizeof(int), cudaMemcpyHostToDevice);
 
 
-	stbi_write_jpg("hough_output.jpg", width, height, 1, pixels, 100);
+	// save input image
+	std::string s_input = "gpu_dimension_" + std::to_string(width) + "_hough_input.jpg";
+	int n_input = s_input.length();
+	char s_char_input[n_input+1];
+	strcpy(s_char_input, s_input.c_str());
+	stbi_write_jpg(s_char_input, width, height, 1, pixels, 100);
 
 	// run the hough test to find the equation of the best line
 	int* best_r = new int[numlines];
@@ -106,6 +118,7 @@ int main(int argc, char* argv[])
 	cudaEventSynchronize(stopEvent);
 	float elapsedTime;
 	cudaEventElapsedTime(&elapsedTime, startEvent, stopEvent);
+	std:: cout << "hough gpu time for dimension " << width << ":\n";
 	std::cout << elapsedTime << "\n";
 
 	// Copy line_matrix back to host
@@ -131,12 +144,14 @@ int main(int argc, char* argv[])
 				}
 			}
 		}
-		// save image with each line added
-		std::string s = "hough_output_with_" + std::to_string(k+1) + "_lines_gpu.jpg";
-		int n = s.length();
-		char s_char[n+1];
-		strcpy(s_char, s.c_str());
-		stbi_write_jpg(s_char, width, height, 1, pixels, 100);
+		// save image with all lines added
+		if (k == numlines - 1) {
+			std::string s = "gpu_dimension_" + std::to_string(width) + "_hough_output_with_" + std::to_string(k+1) + "_lines.jpg";
+			int n = s.length();
+			char s_char[n+1];
+			strcpy(s_char, s.c_str());
+			stbi_write_jpg(s_char, width, height, 1, pixels, 100);
+		}
 	}
 
 	//stbi_write_jpg("hough_output_with_lines.jpg", width, height, 1, pixels, 100);

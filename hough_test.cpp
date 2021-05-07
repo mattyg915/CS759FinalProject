@@ -35,14 +35,18 @@ void insert(int curr_count, int curr_r, int curr_theta, int* best_count, int* be
 int main(int argc, char* argv[])
 {
 	// Must have exactly 1 command line argument
-	if (argc != 2)
+	if (argc != 3)
 	{
-		std::cerr << "Usage: ./main numlines" << std::endl;
+		std::cerr << "Usage: ./main numlines dimension" << std::endl;
 		exit(1);
 	}
 
 	// take command line input (number of lines to display)
 	int numlines = atoi(argv[1]);
+
+	// take command line input (dimension of input image)
+	int width = atoi(argv[2]);
+	int height = width;
 
 	// declare timing variables
 	high_resolution_clock::time_point start;
@@ -50,19 +54,29 @@ int main(int argc, char* argv[])
 	duration<double, std::milli> duration_sec;
 
 	// initialize an array with mostly black but a couple of white pixels
-	int width = 200;
-	int height = 200;
 	auto* pixels = new uint8_t[width * height];
 	for (int i = 0; i < width*height; i++) {
-		pixels[i] = 0;
+		if (i / width > width / 3 && i / width < 2 * width / 3 && i % width > width / 3 && i % width < 2 * width / 3) {
+			pixels[i] = 255;
+		}
+		else{
+			pixels[i] = 0;
+		}
 	}
-	pixels[510] = 255;
-	pixels[2125] = 255;
-	pixels[12175] = 255;
-	pixels[8025] = 255;
-	pixels[5678] = 255;
+	//pixels[510] = 255;
+	//pixels[2125] = 255;
+	//pixels[12175] = 255;
+	//pixels[8025] = 255;
+	//pixels[5678] = 255;
 
-	stbi_write_jpg("hough_output.jpg", width, height, 1, pixels, 100);
+	// save input image
+	std::string s_input = "cpu_dimension_" + std::to_string(width) + "_hough_input.jpg";
+	int n_input = s_input.length();
+	char s_char_input[n_input+1];
+	strcpy(s_char_input, s_input.c_str());
+	stbi_write_jpg(s_char_input, width, height, 1, pixels, 100);
+
+	//stbi_write_jpg("hough_output.jpg", width, height, 1, pixels, 100);
 
 	// run the hough test to find the equation of the best line
 	int* best_r = new int[numlines];
@@ -100,6 +114,7 @@ int main(int argc, char* argv[])
 	end = high_resolution_clock::now();
 	// print the time taken by scan in ms
 	duration_sec = std::chrono::duration_cast<duration<double, std::milli> >(end - start);
+	std:: cout << "hough cpu time for dimension " << width << ":\n";
 	std::cout << duration_sec.count() << "\n";
 
 
@@ -117,12 +132,14 @@ int main(int argc, char* argv[])
 				}
 			}
 		}
-		// save image with each line added
-		std::string s = "hough_output_with_" + std::to_string(k+1) + "_lines.jpg";
-		int n = s.length();
-		char s_char[n+1];
-		strcpy(s_char, s.c_str());
-		stbi_write_jpg(s_char, width, height, 1, pixels, 100);
+		// save image with all lines added
+		if (k == numlines - 1) {
+			std::string s = "cpu_dimension_" + std::to_string(width) + "_hough_output_with_" + std::to_string(k+1) + "_lines.jpg";
+			int n = s.length();
+			char s_char[n+1];
+			strcpy(s_char, s.c_str());
+			stbi_write_jpg(s_char, width, height, 1, pixels, 100);
+		}
 	}
 
 	//stbi_write_jpg("hough_output_with_lines.jpg", width, height, 1, pixels, 100);
