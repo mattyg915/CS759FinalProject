@@ -11,7 +11,7 @@ Test Canny image: compile code with command `g++ canny_test.cpp image_sources/im
 
 Test canny parallel: compile code with command `nvcc canny_test.cu image_sources/convolution.cu image_sources/canny.cu image_sources/gradient.cu image_sources/threshold.cu image_sources/hystersis.cu image_sources/suppression.cu image_sources/image_utils.cpp -Xcompiler -O3 -Xcompiler -Wall -Xptxas -O3 -std c++17 --expt-relaxed-constexpr -o canny_test_cu` Run with `cuda-memcheck ./canny_test_cu {filepath}`
 
-Test sequential hough transformation: compile code with command `g++ hough_test.cpp image_sources/image_utils.cpp -Wall -O3 -std=c++14 -o hough_test`. Run with `./hough_test_cpu {number of lines} {dimension of test image}`. This should print the time taken to run the hough transformation, and output the test image generated and an output image with the specified number of hough lines shown.
+Test sequential hough transformation: compile code with command `g++ hough_test.cpp image_sources/image_utils.cpp -Wall -O3 -std=c++14 -o hough_test_cpu`. Run with `./hough_test_cpu {number of lines} {dimension of test image}`. This should print the time taken to run the hough transformation, and output the test image generated and an output image with the specified number of hough lines shown.
 
 Test parallel hough transformation: compile code with command `nvcc hough_test.cu image_sources/hough.cu image_sources/image_utils.cu -Xcompiler -O3 -Xcompiler -Wall -Xptxas -O3 -std c++17 -o hough_test_gpu` Run with `./hough_test_gpu {number of lines} {dimension of test image}`. This should print the time taken to run the hough transformation, and output the test image generated and an output image with the specified number of hough lines shown.
 
