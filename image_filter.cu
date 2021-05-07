@@ -13,6 +13,7 @@ extern "C" {
 int main(int argc, char* argv[])
 {
 #define CHANNEL_NUM 3
+    using std::cout;
 
     // Must have exactly 3 command line arguments
     if (argc != 2)
@@ -32,6 +33,9 @@ int main(int argc, char* argv[])
         std::cout << "Error loading image\n";
         exit(1);
     }
+
+    cout << "Image width = " << width << std::endl;
+    cout << "Image height = " << height << std::endl;
 
     const int size = width * height;
 
